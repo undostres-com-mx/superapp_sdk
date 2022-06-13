@@ -25,7 +25,7 @@ composer install
 Otherwise, use the requiere instruction to add or create a composer.json
 
 ```
-composer require undostres-com-mx/gratissdk
+composer require undostres-com-mx/superapp_sdk
 ``` 
 
 ## Update
