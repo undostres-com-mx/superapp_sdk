@@ -1,0 +1,152 @@
+{
+  "type": "object",
+  "required": ["orderId", "transactionId", "paymentId", "value", "installments", "miniCart", "callbackUrl", "returnUrl"],
+  "properties": {
+    "reference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "orderId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "transactionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "paymentId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "value": {
+      "type": "number",
+      "minimum": 1
+    },
+    "installments" : {
+      "type": ["object","integer"],
+      "properties": {
+        "custom_card_plans": {
+          "type": "boolean"
+        },
+        "card_plans": {
+          "type": "object",
+          "properties": {
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "miniCart": {
+      "type": "object",
+      "required": ["buyer","items"],
+      "properties": {
+        "shippingValue": {
+          "type": "number",
+          "minimum": 0
+        },
+        "taxValue": {
+          "type": "number",
+          "minimum": 0
+        },
+        "buyer": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "firstName": {
+              "type": ["string","null"]
+            },
+            "lastName": {
+              "type": ["string","null"]
+            },
+            "document": {
+              "type": ["string","null"]
+            },
+            "documentType": {
+              "type": ["string","null"]
+            },
+            "email": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            }
+          }
+        },
+        "shippingAddress": {
+          "type": "object",
+          "properties": {
+            "country": {
+              "type": "string"
+            },
+            "street": {
+              "type": "string"
+            },
+            "exterior": {
+              "type": "string"
+            },
+            "interior": {
+              "type": "string"
+            },
+            "complement": {
+              "type": ["string","null"]
+            },
+            "colony": {
+              "type": "string"
+            },
+            "postalCode": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            }
+          }
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "brand": {
+                "type": "string"
+              },
+              "price": {
+                "type": "number"
+              },
+              "quantity": {
+                "type": "integer"
+              },
+              "discount": {
+                "type": ["number","null"]
+              },
+              "category": {
+                "type": "string"
+              },
+              "deliveryType": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "callbackUrl": {
+      "type": "string",
+      "minLength": 1
+    },
+    "returnUrl": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

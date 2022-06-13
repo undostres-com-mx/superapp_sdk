@@ -1,0 +1,36 @@
+{
+  "type": "object",
+  "required": ["code", "message", "paymentId", "status", "paymentUrl", "delayToAutoSettle", "delayToCancel"],
+  "properties": {
+      "code": {
+          "type": "number",
+          "minLength": 1
+      },
+      "message": {
+          "type": "string",
+          "minLength": 1
+      },
+      "paymentId": {
+          "type": "string",
+          "minimum": 1
+      },
+      "status": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "undefined"
+      },
+      "paymentUrl": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "undostres:\\/\\/home\\?stage=superAppPaymentIntent&url=([A-z0-9.%])*(payment.php)([A-z0-9%])*"
+      },
+      "delayToAutoSettle": {
+        "type": "number",
+        "minLength": 1
+      },
+      "delayToCancel": {
+        "type": "number",
+        "minLength": 1
+      }
+  }
+}
