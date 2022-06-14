@@ -37,10 +37,8 @@ class SDK
    *
    * @return array
    */
-  public function handlePayload()
+  public function handlePayload($requestJSON)
   {
-    $requestJSON = file_get_contents("php://input");
-
     $response = [
       "code" => 400,
       "body" => ["status" => "error"]
@@ -58,7 +56,7 @@ class SDK
       } else if (isset($body["refund"])) {
         Utils::validateData($body["refund"], "SuperappRefundPaymentRequest.json");
         $response = $this->createRefund($body["refund"]);
-      } else  throw new \Exception("Undefined method to handle.", 501);
+      } else throw new \Exception("Undefined method to handle.", 501);
     } catch (\Exception $e) {
       $response = [
         "code" => $e->getCode(),
