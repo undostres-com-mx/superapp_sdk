@@ -4,9 +4,8 @@ namespace UDT\Refund;
 
 use UDT\Utils;
 
-class Refund {
-
-  const REFUND_URL = "/api/v1/superapp/{paymentId}/refunds";
+class Refund
+{
 
   private $refundEndpoint;
   private $appKey;
@@ -27,8 +26,9 @@ class Refund {
    * @param $transactionId
    * @param $value
    */
-  public function __construct($host, $appKey, $appToken, $paymentId, $transactionId, $value) {
-    $this->refundEndpoint = $host . self::REFUND_URL;
+  public function __construct($host, $appKey, $appToken, $paymentId, $transactionId, $value)
+  {
+    $this->refundEndpoint = $this->createRefundUrl($host, $paymentId);
     $this->appKey         = $appKey;
     $this->appToken       = $appToken;
     $this->paymentId      = $paymentId;
@@ -44,8 +44,6 @@ class Refund {
     ];
 
     $this->payloadJSON = Utils::encodePayload($payload);
-
-    $this->refundEndpoint = $this->createRefundUrl($host, $paymentId);
   }
 
   /**
@@ -55,9 +53,9 @@ class Refund {
    * @param $paymentId
    * @return string
    */
-  public function createRefundUrl($host, $paymentId) {
-    $subject = $host . self::REFUND_URL;
-    return str_replace("{paymentId}", $paymentId, $subject);
+  public function createRefundUrl($host, $paymentId)
+  {
+    return str_replace("{paymentId}", $paymentId, $host);
   }
 
   /**
@@ -66,17 +64,17 @@ class Refund {
    * @return array
    * @throws \Exception if the refund is unable to request.
    */
-  public function requestRefund() {
+  public function requestRefund()
+  {
     if (!isset($this->payloadJSON))
-      throw new \Exception("Payload not set");
+      throw new \Exception("Payload not set", 503);
 
     if (strpos($this->refundEndpoint, "{paymentId}") !== false)
-      throw new \Exception("paymentId not set in URL");
+      throw new \Exception("paymentId not set in URL", 503);
 
     $response = Utils::request($this->refundEndpoint, $this->payloadJSON, $this->appKey, $this->appToken);
-    Utils::validateData($response, "SuperappRefundPaymentResponse.json", 500);
+    Utils::validateData($response, "SuperappRefundPaymentResponse.json");
 
     return $response;
   }
-
 }

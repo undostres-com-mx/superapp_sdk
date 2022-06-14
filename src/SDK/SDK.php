@@ -7,50 +7,29 @@ use UDT\Cancel\Cancel;
 use UDT\Refund\Refund;
 use UDT\Utils;
 
-class SDK {
+class SDK
+{
 
   private $appKey;
   private $appToken;
-  private $env;
+  private $urlCancel;
+  private $urlRefund;
+  private $urlPayment;
   private $host;
 
   /**
    * Constructs a new SDK object able to communicate with the UnDosTres' API.
    *
-   * @param string $appKey   Merchant's app key
-   * @param string $appToken Merchant's app token
-   * @param string $env      Environment where the SDK is running
+   * @param array $config   Dictionary with condifg data
    */
-  public function __construct($appKey, $appToken, $env = "dev") {
-    $this->appKey   = $appKey;
-    $this->appToken = $appToken;
-    $this->env      = $env;
-
-    $this->host = self::getHost($env);
-  }
-
-  public function setEnv($env) {
-    $this->env = $env;
-    $this->host = self::getHost($env);
-  }
-
-  public function getEnv() {
-    return $this->env;
-  }
-
-  /**
-   * Get corresponding host URL given the environment.
-   *
-   * @param string $env
-   * @return string
-   */
-  private static function getHost($env) {
-    switch ($env) {
-      case "dev":
-        return "localhost:8081";
-      default:
-        return "test.undostres.com.mx";
-    }
+  public function __construct(array $config)
+  {
+    $this->appKey      = $config['appKey'];
+    $this->appToken    = $config['appToken'];
+    $this->host        = $config['host'];
+    $this->urlCancel   = $this->host . $config['urlCancel'];
+    $this->urlRefund   = $this->host . $config['urlRefund'];
+    $this->urlPayment  = $this->host . $config['urlPayment'];
   }
 
   /**
@@ -58,31 +37,29 @@ class SDK {
    *
    * @return array
    */
-  public function handlePayload() {
+  public function handlePayload()
+  {
     $requestJSON = file_get_contents("php://input");
 
     $response = [
       "code" => 400,
       "body" => ["status" => "error"]
-      ];
+    ];
 
     $body = json_decode($requestJSON, true);
 
     try {
-      if(isset($body["payment"])) {
-        Utils::validateData($body["payment"], "SuperappCreatePaymentRequest.json", 400);
+      if (isset($body["payment"])) {
+        Utils::validateData($body["payment"], "SuperappCreatePaymentRequest.json");
         $response = $this->createPayment($body["payment"]);
-      }
-      else if(isset($body["cancel"])) {
-        Utils::validateData($body["cancel"], "SuperappCancelPaymentRequest.json", 400);
+      } else if (isset($body["cancel"])) {
+        Utils::validateData($body["cancel"], "SuperappCancelPaymentRequest.json");
         $response = $this->createCancel($body["cancel"]);
-      }
-      else if(isset($body["refund"])) {
-        Utils::validateData($body["refund"], "SuperappRefundPaymentRequest.json", 400);
+      } else if (isset($body["refund"])) {
+        Utils::validateData($body["refund"], "SuperappRefundPaymentRequest.json");
         $response = $this->createRefund($body["refund"]);
-      }
-    }
-    catch (\Exception $e) {
+      } else  throw new \Exception("Undefined method to handle.", 501);
+    } catch (\Exception $e) {
       $response = [
         "code" => $e->getCode(),
         "body" => [
@@ -90,8 +67,7 @@ class SDK {
           "error" => $e->getMessage()
         ]
       ];
-    }
-    finally {
+    } finally {
       return $response;
     }
   }
@@ -101,9 +77,10 @@ class SDK {
    * @return array
    * @throws \Exception if any step on the order creation or request fails.
    */
-  public function createPayment($paymentData) {
+  private function createPayment($paymentData)
+  {
     $payment = new Payment(
-      $this->host,
+      $this->urlPayment,
       $this->appKey,
       $this->appToken,
       $paymentData
@@ -119,8 +96,8 @@ class SDK {
       "body" => [
         "status" => "success",
         "queryParams" => $queryParams
-        ]
-      ];
+      ]
+    ];
   }
 
   /**
@@ -128,15 +105,16 @@ class SDK {
    * @return array
    * @throws \Exception if any step on the order creation or request fails.
    */
-  public function createCancel($cancelData) {
+  private function createCancel($cancelData)
+  {
     $cancel = new Cancel(
-      $this->host,
+      $this->urlCancel,
       $this->appKey,
       $this->appToken,
       $cancelData
     );
 
-    $response = $cancel->requestCancel();
+    $cancel->requestCancel();
 
     return [
       "code" => 200,
@@ -151,9 +129,10 @@ class SDK {
    * @return array
    * @throws \Exception if any step on the order creation or request fails.
    */
-  public function createRefund($refundData) {
+  private function createRefund($refundData)
+  {
     $refund = new Refund(
-      $this->host,
+      $this->urlRefund,
       $this->appKey,
       $this->appToken,
       $refundData["paymentId"],
@@ -161,7 +140,7 @@ class SDK {
       round(floatval($refundData["value"]), 2)
     );
 
-    $response = $refund->requestRefund();
+    $refund->requestRefund();
 
     return [
       "code" => 200,

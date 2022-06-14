@@ -4,9 +4,8 @@ namespace UDT\Payment;
 
 use UDT\Utils;
 
-class Payment {
-
-  const CREATE_URL = "/api/v1/superapp/payments";
+class Payment
+{
 
   private $createEndpoint;
   private $appKey;
@@ -21,8 +20,9 @@ class Payment {
    * @param string $appToken
    * @param array $payload
    */
-  public function __construct($host, $appKey, $appToken, $payload) {
-    $this->createEndpoint = $host . self::CREATE_URL;
+  public function __construct($host, $appKey, $appToken, $payload)
+  {
+    $this->createEndpoint = $host;
     $this->appKey         = $appKey;
     $this->appToken       = $appToken;
 
@@ -35,14 +35,14 @@ class Payment {
    * @return array
    * @throws \Exception if the payment is unable to request.
    */
-  public function requestPayment() {
+  public function requestPayment()
+  {
     if (!isset($this->payloadJSON))
-      throw new \Exception("Payload not set", 400);
+      throw new \Exception("Payload not set", 503);
 
     $response = Utils::request($this->createEndpoint, $this->payloadJSON, $this->appKey, $this->appToken);
-    Utils::validateData($response, "SuperappCreatePaymentResponse.json", 500);
+    Utils::validateData($response, "SuperappCreatePaymentResponse.json");
 
     return $response;
   }
-
 }

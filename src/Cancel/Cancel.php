@@ -4,9 +4,8 @@ namespace UDT\Cancel;
 
 use UDT\Utils;
 
-class Cancel {
-
-  const CANCEL_URL = "/api/v1/superapp/{paymentId}/cancellations";
+class Cancel
+{
 
   private $cancelEndpoint;
   private $appKey;
@@ -20,23 +19,19 @@ class Cancel {
    * @param $host
    * @param $appKey
    * @param $appToken
-   * @param $paymentId
+   * @param $payload
    */
-  public function __construct($host, $appKey, $appToken, $payload) {
-    $this->cancelEndpoint = $host . self::CANCEL_URL;
-    $this->appKey        = $appKey;
-    $this->appToken      = $appToken;
-    $this->paymentId     = $payload["paymentId"];
-    $this->requestId     = $payload["paymentId"] . date("YmdHisu");
-
-    $payload = [
+  public function __construct($host, $appKey, $appToken, $payload)
+  {
+    $this->cancelEndpoint = $this->createCancelUrl($host, $this->paymentId);
+    $this->appKey         = $appKey;
+    $this->appToken       = $appToken;
+    $this->paymentId      = $payload["paymentId"];
+    $this->requestId      = $payload["paymentId"] . date("YmdHisu");
+    $this->payloadJSON = Utils::encodePayload([
       "paymentId"     => $this->paymentId,
       "requestId"     => $this->requestId
-    ];
-
-    $this->payloadJSON = Utils::encodePayload($payload);
-
-    $this->cancelEndpoint = $this->createCancelUrl($host, $this->paymentId);
+    ]);
   }
 
   /**
@@ -46,9 +41,9 @@ class Cancel {
    * @param string $paymentId
    * @return string
    */
-  public function createCancelUrl($host, $paymentId) {
-    $subject = $host . self::CANCEL_URL;
-    return str_replace("{paymentId}", $paymentId, $subject);
+  public function createCancelUrl($host, $paymentId)
+  {
+    return str_replace("{paymentId}", $paymentId, $host);
   }
 
   /**
@@ -57,17 +52,17 @@ class Cancel {
    * @return array
    * @throws \Exception if the cancellation is unable to request.
    */
-  public function requestCancel() {
+  public function requestCancel()
+  {
     if (!isset($this->payloadJSON))
-      throw new \Exception("Payload not set");
+      throw new \Exception("Payload not set",503);
 
     if (strpos($this->cancelEndpoint, "{paymentId}") !== false)
-      throw new \Exception("paymentId not set in URL");
+      throw new \Exception("PaymentId not set in URL", 503);
 
     $response = Utils::request($this->cancelEndpoint, $this->payloadJSON, $this->appKey, $this->appToken);
-    Utils::validateData($response, "SuperappCancelPaymentResponse.json", 500);
+    Utils::validateData($response, "SuperappCancelPaymentResponse.json");
 
     return $response;
   }
-
 }
