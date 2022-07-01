@@ -161,7 +161,7 @@ class SDK
       $this->app_token,
       $refundData["paymentId"],
       $refundData["transactionId"],
-      $refundData["value"]
+      round(floatval($refundData["value"]), 2)
     );
 
     $refund->requestRefund();
