@@ -31,6 +31,7 @@ class SDK
       if ($mode === 'production') $this->host = 'https://undostres.com.mx';
       else if ($mode === 'testing') $this->host = 'https://test.undostres.com.mx';
       else if ($mode === 'nobugs') $this->host = 'https://nobugs.undostres.com.mx';
+      else if ($mode === 'qa01') $this->host = 'https://qa01.undostres.com.mx/';
       else $this->host = 'http://localhost:8081';
       $config = json_decode($config);
       $this->api_key      = $config->api_key;
