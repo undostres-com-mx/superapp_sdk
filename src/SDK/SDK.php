@@ -122,7 +122,7 @@ class SDK
     $response = $payment->requestPayment();
 
     $queryParams = [];
-    parse_str(parse_url($response['paymentUrl'])['query'], $queryParams);
+    parse_str(parse_url($response->paymentUrl)['query'], $queryParams);
     $url = $queryParams['url'];
     if ($this->mode == 'localhost')
       $url = str_replace('https://test.undostres.com.mx', 'http://localhost:8081', $url);
