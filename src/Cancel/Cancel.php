@@ -54,7 +54,7 @@ class Cancel
    */
   public function requestCancel()
   {
-    if (!isset($this->payloadJSON)) throw new \Exception("Payload not set", 503);
+    if (!isset($this->payloadJSON)) throw new \Exception("Payload not set", 500);
     $response = Utils::request($this->cancelEndpoint, $this->payloadJSON, $this->appKey, $this->appToken);
     Utils::validateData($response, "SuperappCancelPaymentResponse.json");
 

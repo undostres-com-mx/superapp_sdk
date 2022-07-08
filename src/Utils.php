@@ -61,7 +61,7 @@ class Utils
       $field = implode('->', $error->dataPointer());
       $field = empty($field) ? 'body' : $field;
       $errorMsg = "Invalid data in $field";
-      throw new \Exception($errorMsg, 502);
+      throw new \Exception($errorMsg, 500);
     }
   }
 
@@ -77,4 +77,10 @@ class Utils
 
     return $payloadJSON;
   }
+
+  public static function formatMoney($money)
+  {
+      return floatval(number_format($money, 2, '.', ''));
+  }
+  
 }
