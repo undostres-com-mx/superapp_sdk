@@ -9,40 +9,44 @@ use UDT\Utils;
 
 class SDK
 {
-  private $is_set = false;
-  private $api_key;
-  private $api_token;
-  private $app_key;
-  private $app_token;
-  private $url_cancel;
-  private $url_refund;
-  private $url_payment;
   private $host;
   private $mode;
-  private $hash = '72253f579e7dc003da754dad4bd403a6';
+  private $is_set;
+  private $api_key;
+  private $app_key;
+  private $api_token;
+  private $app_token;
+  private $hash        = '72253f579e7dc003da754dad4bd403a6';
+  private $url_cancel  = '/api/v1/superapp/{paymentId}/cancellations';
+  private $url_refund  = '/api/v1/superapp/{paymentId}/refunds';
+  private $url_payment = '/api/v1/superapp/payments';
 
   /**
    * RECEIVE ENCRYPTED DATA AND CONSTRUCT API TO COMUNICATE WITH UDT
    */
   public function __construct(string $keyConfig, string $mode)
   {
-    $config = $this->decrypt($keyConfig);
-    if ($config != false) {
-      if ($mode === 'production') $this->host = 'https://undostres.com.mx';
-      else if ($mode === 'testing') $this->host = 'https://test.undostres.com.mx';
-      else if ($mode === 'nobugs') $this->host = 'https://nobugs.undostres.com.mx';
-      else if ($mode === 'qa01') $this->host = 'https://qa01.undostres.com.mx/';
-      else $this->host = 'http://localhost:8081';
-      $config = json_decode($config);
-      $this->api_key      = $config->api_key;
-      $this->api_token    = $config->api_token;
-      $this->app_key      = $config->app_key;
-      $this->app_token    = $config->app_token;
-      $this->url_cancel   = $this->host . $config->url_cancel;
-      $this->url_refund   = $this->host . $config->url_refund;
-      $this->url_payment  = $this->host . $config->url_payment;
-      $this->is_set       = true;
-      $this->mode         = $mode;
+    try {
+      $config = $this->decrypt($keyConfig);
+      if ($config != false) {
+        if ($mode === 'production')     $this->host = 'https://undostres.com.mx';
+        else if ($mode === 'testing')   $this->host = 'https://test.undostres.com.mx';
+        else if ($mode === 'nobugs')    $this->host = 'https://nobugs.undostres.com.mx';
+        else if ($mode === 'qa01')      $this->host = 'https://qa01.undostres.com.mx/';
+        else if ($mode === 'localhost') $this->host = 'http://localhost:8081';
+        $config             = json_decode($config);
+        $this->api_key      = $config->api_key;
+        $this->api_token    = $config->api_token;
+        $this->app_key      = $config->app_key;
+        $this->app_token    = $config->app_token;
+        $this->url_cancel   = $this->host . $this->url_cancel;
+        $this->url_refund   = $this->host . $this->url_refund;
+        $this->url_payment  = $this->host . $this->url_payment;
+        $this->is_set       = true;
+        $this->mode         = $mode;
+      } else $this->is_set  = false;
+    } catch (\Exception $e) {
+      $this->is_set = false;
     }
   }
 
@@ -84,6 +88,7 @@ class SDK
   public function handlePayload($requestJSON)
   {
     try {
+      if ($this->is_set == false) throw new \Exception('NOT SET');
       $body = json_decode($requestJSON, true);
       if (isset($body['payment'])) {
         Utils::validateData($body["payment"], "SuperappCreatePaymentRequest.json");
