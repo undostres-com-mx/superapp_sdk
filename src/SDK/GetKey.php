@@ -1,9 +1,16 @@
 <?php
+    namespace UDT\SDK;
+    require("SDK.php");
+    for($i = 1; $i < 5 ; $i++)
+        if(strlen($argv[$i]) <= 0 || strlen($argv[$i]) > 255){
+            exit('Error de longitud en parametro ' . $i . PHP_EOL);
+        }
     $data = json_encode([
-        'api_key' => $argv[0],
-        'api_token' => $argv[1],
-        'app_key' => $argv[2],
-        'app_token' => $argv[3]
+        'api_key' => $argv[1],
+        'api_token' => $argv[2],
+        'app_key' => $argv[3],
+        'app_token' => $argv[4]
     ]);
-    $key = base64_encode(openssl_encrypt($data, 'DES-EDE3', '72253f579e7dc003da754dad4bd403a6', OPENSSL_RAW_DATA));
-    echo $key. PHP_EOL;
+    $sdk = new SDK('test','');
+    $key = $sdk->encrypt($data);
+    echo 'The Key is: '. PHP_EOL . $key . PHP_EOL . 'END' . PHP_EOL;
