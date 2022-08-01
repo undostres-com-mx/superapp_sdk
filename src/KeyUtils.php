@@ -14,3 +14,9 @@
     $sdk = new SDK('test','');
     $key = $sdk->encrypt($data);
     echo 'The Key is: '. PHP_EOL . $key . PHP_EOL . 'END' . PHP_EOL;
+
+
+
+    $sdk = new SDK('test','');
+    $key = $sdk->decrypt($argv[1]);
+    echo 'The Key is: '. $key . PHP_EOL;

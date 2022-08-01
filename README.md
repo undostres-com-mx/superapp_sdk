@@ -2,7 +2,11 @@
 
 ## Composer
 
-The composer account used was carlos.miranda@undostres.com.mx, composer do updates on push throught GitHub hook, but can be manually updated on the packages list webpage.
+The composer account used was carlos.miranda@undostres.com.mx.
+
+Composer do updates on push through GitHub hook, but can be manually updated on the packages list webpage.
+
+---
 
 ### Composer installation
 
@@ -13,6 +17,8 @@ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 php -r "unlink('composer-setup.php');"
 ```
+
+---
 
 ### Installation
 
@@ -26,7 +32,9 @@ Otherwise, use the requiere instruction to add or create a composer.json
 
 ```
 composer require undostres-com-mx/superapp_sdk
-``` 
+```
+
+---
 
 ### Update
 
@@ -54,6 +62,12 @@ There you can do:
     - Check api/token to see if request is authentic.
 - handlePayload
     - Make a request to UDT, validate data in/out.
+
+Do the following to encrypt/decrypt some key:
+
+```
+php .\src\KeyUtils.php
+``` 
 
 ---
 
