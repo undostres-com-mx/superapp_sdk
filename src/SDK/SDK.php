@@ -16,6 +16,7 @@ class SDK
   private $app_key;
   private $api_token;
   private $app_token;
+  private $encrypt_key;
   private $hash        = '72253f579e7dc003da754dad4bd403a6';
   private $url_cancel  = '/api/v1/superapp/{paymentId}/cancellations';
   private $url_refund  = '/api/v1/superapp/{paymentId}/refunds';
@@ -39,6 +40,7 @@ class SDK
         $this->api_token    = $config->api_token;
         $this->app_key      = $config->app_key;
         $this->app_token    = $config->app_token;
+        $this->encrypt_key  = $config->encrypt_key;
         $this->url_cancel   = $this->host . $this->url_cancel;
         $this->url_refund   = $this->host . $this->url_refund;
         $this->url_payment  = $this->host . $this->url_payment;
@@ -173,5 +175,14 @@ class SDK
     $refund->requestRefund();
 
     return ['code' => 200, 'status' => 'Success'];
+  }
+
+  public function decode_url($url){
+    $key = substr($this->encrypt_key, 0, 32);
+    $vector = substr($this->encrypt_key, 32);
+    $binaryKey = hex2bin($key);
+    $binaryVector = hex2bin($vector);
+    $encryptedJsonData = openssl_decrypt(base64_decode(rawurldecode($url)), "aes-128-cbc", $binaryKey, 1, $binaryVector);
+    return json_decode($encryptedJsonData);
   }
 }

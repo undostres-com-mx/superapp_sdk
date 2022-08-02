@@ -9,7 +9,8 @@
         'api_key' => $argv[1],
         'api_token' => $argv[2],
         'app_key' => $argv[3],
-        'app_token' => $argv[4]
+        'app_token' => $argv[4],
+        'encrypt_key' => $argv[5]
     ]);
     $sdk = new SDK('test','');
     $key = $sdk->encrypt($data);
