@@ -1,10 +1,10 @@
 <?php
 
-namespace UDT\SDK;
+namespace UDT;
 
-use UDT\Payment\Payment;
-use UDT\Cancel\Cancel;
-use UDT\Refund\Refund;
+use UDT\Payment;
+use UDT\Cancel;
+use UDT\Refund;
 use UDT\Utils;
 
 class SDK
@@ -28,7 +28,7 @@ class SDK
   public function __construct(string $keyConfig, string $mode)
   {
     try {
-      $config = $this->decrypt($keyConfig);
+      $config = $this->decryptSDK($keyConfig);
       if ($config != false) {
         if ($mode === 'production')     $this->host = 'https://undostres.com.mx';
         else if ($mode === 'testing')   $this->host = 'https://test.undostres.com.mx';
@@ -67,9 +67,23 @@ class SDK
    * 
    * @return string
    */
-  public function decrypt($data)
+  public function decryptSDK($data, $decode = true)
   {
-    return openssl_decrypt(base64_decode($data), 'DES-EDE3', $this->hash, OPENSSL_RAW_DATA);
+    $data = openssl_decrypt(base64_decode($data), 'DES-EDE3', $this->hash, OPENSSL_RAW_DATA);
+    if ($decode === true) $data = json_decode($data);
+    return $data;
+  }
+
+  /**
+   * DECRYPT USING AES FOR UDT
+   * 
+   * @return string,json
+   */
+  public function decryptUDT($data, $key, $decode = true)
+  {
+      $data = openssl_decrypt(base64_decode($data), 'aes-128-cbc', hex2bin(substr($key, 0, 32)), 1, hex2bin(substr($key, 32)));
+      if ($decode === true) $data = json_decode($data);
+      return $data;
   }
 
   /**
@@ -177,7 +191,8 @@ class SDK
     return ['code' => 200, 'status' => 'Success'];
   }
 
-  public function decode_url($url){
+  public function decode_url($url)
+  {
     $key = substr($this->encrypt_key, 0, 32);
     $vector = substr($this->encrypt_key, 32);
     $binaryKey = hex2bin($key);

@@ -1,6 +1,6 @@
 <?php
 
-namespace UDT\Refund;
+namespace UDT;
 
 use UDT\Utils;
 

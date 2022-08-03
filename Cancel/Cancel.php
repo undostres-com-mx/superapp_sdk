@@ -1,6 +1,6 @@
 <?php
 
-namespace UDT\Cancel;
+namespace UDT;
 
 use UDT\Utils;
 

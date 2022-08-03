@@ -1,6 +1,6 @@
 <?php
 
-namespace UDT\Payment;
+namespace UDT;
 
 use UDT\Utils;
 
