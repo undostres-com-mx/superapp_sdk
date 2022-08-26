@@ -52,7 +52,7 @@ class Cancel
    * @return array
    * @throws \Exception if the cancellation is unable to request.
    */
-  public function requestCancel()
+  public function request()
   {
     if (!isset($this->payloadJSON)) throw new \Exception("Payload not set", 500);
     $response = Utils::request($this->cancelEndpoint, $this->payloadJSON, $this->appKey, $this->appToken);

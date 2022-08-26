@@ -48,22 +48,28 @@ composer update
 
 The use of composer requies the usage of `require_once('/vendor/autoload.php');`
 
-Import the SDK use `UDT\SDK\SDK`;
+Import the SDK use `use UDT\SDK;`;
 
 Instance the class `$sdk = SDK(hashKey, server);`
 
 There you can do:
 
-- encrypt
+- encryptSDK
     - Encrypt string with 3des algorithm.
-- decrypt
+- decryptSDK
     - Decrypt string with 3des algorithm.
-- is_authentic_request
+- decryptUDT
+    - Decrypt string with UDT algorithm.
+- validateRequestHeaders
     - Check api/token to see if request is authentic.
-- handlePayload
-    - Make a request to UDT, validate data in/out.
+- createPayment
+    - Create an order and retrieve payment url.
+- cancelOrder
+    - Cancel a pending order on UDT..
+- refundOrder
+    - Refund a payed order on UDT.
 
-Do the following to encrypt/decrypt some key:
+Do the following on project root folder to use the key utilities:
 
 ```
 php .\src\KeyUtils.php
@@ -75,4 +81,3 @@ php .\src\KeyUtils.php
 
 - Carlos Miranda
 - Adrian García
-- Manuel Carretero

@@ -64,8 +64,12 @@ class Refund
    * @return array
    * @throws \Exception if the refund is unable to request.
    */
-  public function requestRefund()
+  public function request()
   {
+
+
+
+
     if (!isset($this->payloadJSON))
       throw new \Exception("Payload not set", 500);
 

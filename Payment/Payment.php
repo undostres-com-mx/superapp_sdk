@@ -32,10 +32,10 @@ class Payment
   /**
    * Communicate with server to request a new payment.
    *
-   * @return array
+   * @return object
    * @throws \Exception if the payment is unable to request.
    */
-  public function requestPayment()
+  public function request()
   {
     if (!isset($this->payloadJSON))
       throw new \Exception("Payload not set", 500);

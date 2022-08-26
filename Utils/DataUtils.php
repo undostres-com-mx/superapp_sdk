@@ -2,12 +2,13 @@
 
 namespace UDT;
 
-use Opis\JsonSchema\Schema;
+
+use Opis\JsonSchema\Helper;
 use Opis\JsonSchema\Validator;
 
-class Utils
-{
 
+class DataUtils
+{
   public static function request($url, $payloadJSON, $appKey, $appToken)
   {
     $curl = curl_init();
@@ -48,6 +49,26 @@ class Utils
 
   public static function validateData($data, $schemaFile)
   {
+
+
+    $validator = new Validator();
+    $result = $validator->validate(
+      "some data",
+      "http://example.com/schema.json"
+    );
+
+
+
+
+
+
+
+
+
+
+
+
+
     $data = json_decode(json_encode($data), false);
     $schemaPath = __DIR__ . "/Schemas/" . $schemaFile;
     $schema = Schema::fromJsonString(file_get_contents($schemaPath));
@@ -77,10 +98,4 @@ class Utils
 
     return $payloadJSON;
   }
-
-  public static function formatMoney($money)
-  {
-      return floatval(number_format($money, 2, '.', ''));
-  }
-  
 }
