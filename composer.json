@@ -1,29 +1,25 @@
 {
     "name": "undostres-com-mx/superapp_sdk",
-    "description": "SDK",
+    "description": "SDK for undostres superapp.",
     "license": "proprietary",
     "autoload": {
         "psr-4": {
-            "UDT\\": "src/"
+            "UDT\\": ""
         }
     },
     "authors": [
         {
-            "name": "Adrián García Pérez",
-            "email": "adrian.garcia@undostres.com.mx"
-        },
-        {
-            "name": "Manuel Carretero",
-            "email": "manuel.carretero@undostres.com.mx"
-        },
-        {
             "name": "Carlos Miranda",
             "email": "carlos.miranda@undostres.com.mx"
+        },
+        {
+            "name": "Adrián García Pérez",
+            "email": "adrian.garcia@undostres.com.mx"
         }
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.1",
         "ext-curl": "*",
         "ext-json": "*",
         "ext-openssl": "*",

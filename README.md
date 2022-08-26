@@ -1,14 +1,12 @@
 # SuperApp SDK
 
-## Composer
+## Composer account
 
-The composer account used was carlos.miranda@undostres.com.mx.
-
-Composer do updates on push through GitHub hook, but can be manually updated on the packages list webpage.
+The composer account used was carlos.miranda@undostres.com.mx, for troubleshooting please contact.
 
 ---
 
-### Composer installation
+## Composer installation
 
 Composer it's needed, if missing do:
 
@@ -20,15 +18,15 @@ php -r "unlink('composer-setup.php');"
 
 ---
 
-### Installation
+## Installation
 
-If composer.json is present, and has de package in the requeriment list do:
+If composer.json is present, and has the package in the requirement list do:
 
 ```
 composer install
 ``` 
 
-Otherwise, use the requiere instruction to add or create a composer.json
+Otherwise, use the require instruction to add or create a composer.json
 
 ```
 composer require undostres-com-mx/superapp_sdk
@@ -36,7 +34,7 @@ composer require undostres-com-mx/superapp_sdk
 
 ---
 
-### Update
+## Update
 
 To update this package, inside the composer.json folder do:
 
@@ -48,22 +46,32 @@ composer update
 
 ## Usage
 
-The use of composer requies the usage of `require_once('/vendor/autoload.php');`
+The use of composer requires the usage of `require_once('/vendor/autoload.php');`
 
-Instance the class `SDK(hashKey, server)`
+Import the SDK use `use UDT\SDK\SASDK;`;
+
+Initialize the static class `SASDK::init(hashKey, server);`
 
 There you can do:
 
-- encrypt
-    - Encrypt string with 3des algorithm.
-- decrypt
-    - Decrypt string with 3des algorithm.
-- is_authentic_request
-    - Check api/token to see if request is authentic.
-- handlePayload
-    - Make a request to UDT, validate data in/out.
+- encryptSDK
+  - Encrypt string with 3des algorithm.
+- decryptSDK
+  - Decrypt string with 3des algorithm.
+- decryptUDT
+  - Decrypt string with UDT algorithm.
+- validateRequestHeaders
+  - Check api/token to see if request is authentic.
+- formatMoney
+  - Gives the standard format to money.
+- createPayment
+  - Create an order and retrieve payment url.
+- cancelOrder
+  - Cancel a pending order on UDT.
+- refundOrder
+  - Refund a paid order on UDT.
 
-Do the following to encrypt/decrypt some key:
+Do the following on project root folder to use the key utilities:
 
 ```
 php .\src\KeyUtils.php
@@ -73,6 +81,5 @@ php .\src\KeyUtils.php
 
 ## Authors
 
-- Adrian García
-- Manuel Carretero
 - Carlos Miranda
+- Adrian Garcia
