@@ -8,7 +8,7 @@ The composer account used was carlos.miranda@undostres.com.mx, for troubleshooti
 
 ## Composer installation
 
-Composer it's needed, if missing do:
+Composer is needed, if missing do:
 
 ```
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
