@@ -53,7 +53,7 @@ class DataUtils
     public static function encodePayload($payload)
     {
         $payloadJSON = json_encode($payload);
-        if (json_last_error() !== JSON_ERROR_NONE) throw new Exception("The response data is not JSON decodable :: " . json_last_error_msg(), 500);
+        if (json_last_error() !== JSON_ERROR_NONE) throw new Exception("The data is not JSON encodable :: " . json_last_error_msg(), 500);
         return $payloadJSON;
     }
 
