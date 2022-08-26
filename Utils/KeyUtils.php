@@ -1,6 +1,7 @@
 <?php
-require(dirname(dirname(__FILE__))."/SDK/SASDK.php");
-use UDT\SASDK;
+
+require_once('vendor/autoload.php');
+use UDT\SDK\SASDK;
 
 $exit = false;
 $savedMessage = null;
@@ -62,8 +63,8 @@ function createHashKey()
         "appToken" => $appToken,
         "appKey" => $appKey,
         "appHash" => $appHash
-    ]), false);
-    saveMessage($dataEncoded ?  $dataEncoded : "AN ERROR HAS OCURRED.");
+    ]));
+    saveMessage($dataEncoded ?: "AN ERROR HAS OCCURRED.");
 }
 
 function validateHashKey()
@@ -72,7 +73,7 @@ function validateHashKey()
     echo ("=======================================\n======  MERCHANT HASH VALIDATOR  ======\n=======================================\n\n\nHash: ");
     $data = rtrim(fgets(STDIN));
     $dataDecoded = SASDK::decryptSDK($data, false);
-    saveMessage($dataDecoded ?  $dataDecoded : "INVALID HASH.");
+    saveMessage($dataDecoded ?: "INVALID HASH.");
 }
 
 function validateUDTKey()
@@ -83,5 +84,5 @@ function validateUDTKey()
     echo ("Key: ");
     $key = rtrim(fgets(STDIN));
     $dataDecoded = SASDK::decryptUDT($data, $key, false);
-    saveMessage($dataDecoded ?  $dataDecoded : "INVALID DATA/KEY.");
+    saveMessage($dataDecoded ?: "INVALID DATA/KEY.");
 }

@@ -1,48 +1,24 @@
 <?php
 
-namespace UDT;
+namespace UDT\Payment;
 
-use UDT\Utils;
+use Exception;
+use UDT\Utils\DataUtils;
 
 class Payment
 {
-
-  private $createEndpoint;
-  private $appKey;
-  private $appToken;
-  private $payloadJSON;
-
-  /**
-   * Construct a new payment order
-   *
-   * @param string $host
-   * @param string $appKey
-   * @param string $appToken
-   * @param array $payload
-   */
-  public function __construct($host, $appKey, $appToken, $payload)
-  {
-    $this->createEndpoint = $host;
-    $this->appKey         = $appKey;
-    $this->appToken       = $appToken;
-
-    $this->payloadJSON = Utils::encodePayload($payload);
-  }
-
-  /**
-   * Communicate with server to request a new payment.
-   *
-   * @return object
-   * @throws \Exception if the payment is unable to request.
-   */
-  public function request()
-  {
-    if (!isset($this->payloadJSON))
-      throw new \Exception("Payload not set", 500);
-
-    $response = Utils::request($this->createEndpoint, $this->payloadJSON, $this->appKey, $this->appToken);
-    Utils::validateData($response, "SuperappCreatePaymentResponse.json");
-
-    return $response;
-  }
+    /**
+     * COMMUNICATE WITH SERVER TO REQUEST PAYMENT URL AND VALIDATES DATA.
+     *
+     * @return object
+     * @throws Exception if the payment is unable to request.
+     */
+    public static function request($urlPayment, $appKey, $appToken, $json)
+    {
+        if ($json === null) throw new Exception("Payload not set.", 500);
+        DataUtils::validateData($json, "SuperappCreatePaymentRequest.json");
+        $response = DataUtils::request($urlPayment, $appKey, $appToken, $json);
+        DataUtils::validateData($response, "SuperappCreatePaymentResponse.json");
+        return $response;
+    }
 }

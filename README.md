@@ -20,13 +20,13 @@ php -r "unlink('composer-setup.php');"
 
 ## Installation
 
-If composer.json is present, and has de package in the requeriment list do:
+If composer.json is present, and has the package in the requirement list do:
 
 ```
 composer install
 ``` 
 
-Otherwise, use the requiere instruction to add or create a composer.json
+Otherwise, use the require instruction to add or create a composer.json
 
 ```
 composer require undostres-com-mx/superapp_sdk
@@ -46,28 +46,30 @@ composer update
 
 ## Usage
 
-The use of composer requies the usage of `require_once('/vendor/autoload.php');`
+The use of composer requires the usage of `require_once('/vendor/autoload.php');`
 
-Import the SDK use `use UDT\SDK;`;
+Import the SDK use `use UDT\SDK\SASDK;`;
 
-Instance the class `$sdk = SDK(hashKey, server);`
+Initialize the static class `SASDK::init(hashKey, server);`
 
 There you can do:
 
 - encryptSDK
-    - Encrypt string with 3des algorithm.
+  - Encrypt string with 3des algorithm.
 - decryptSDK
-    - Decrypt string with 3des algorithm.
+  - Decrypt string with 3des algorithm.
 - decryptUDT
-    - Decrypt string with UDT algorithm.
+  - Decrypt string with UDT algorithm.
 - validateRequestHeaders
-    - Check api/token to see if request is authentic.
+  - Check api/token to see if request is authentic.
+- formatMoney
+  - Gives the standard format to money.
 - createPayment
-    - Create an order and retrieve payment url.
+  - Create an order and retrieve payment url.
 - cancelOrder
-    - Cancel a pending order on UDT..
+  - Cancel a pending order on UDT.
 - refundOrder
-    - Refund a payed order on UDT.
+  - Refund a paid order on UDT.
 
 Do the following on project root folder to use the key utilities:
 
@@ -80,4 +82,4 @@ php .\src\KeyUtils.php
 ## Authors
 
 - Carlos Miranda
-- Adrian García
+- Adrian Garcia
