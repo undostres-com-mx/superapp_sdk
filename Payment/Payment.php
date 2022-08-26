@@ -8,10 +8,10 @@ use UDT\Utils\DataUtils;
 class Payment
 {
     /**
-     * COMMUNICATE WITH SERVER TO REQUEST PAYMENT URL AND VALIDATES DATA.
+     * COMMUNICATE WITH SERVER TO REQUEST PAYMENT URL AND VALIDATES DATA
      *
      * @return object
-     * @throws Exception if the payment is unable to request.
+     * @throws Exception
      */
     public static function request($urlPayment, $appKey, $appToken, $json)
     {

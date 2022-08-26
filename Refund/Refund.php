@@ -8,23 +8,23 @@ use UDT\Utils\DataUtils;
 class Refund
 {
     /**
-     * Communicate with server to request a new payment.
+     * COMMUNICATE WITH SERVER TO REQUEST REFUND AN ORDER AND VALIDATES DATA
      *
      * @return object
-     * @throws Exception if the payment is unable to request.
+     * @throws Exception
      */
     public static function request($urlRefund, $appKey, $appToken, $paymentId, $transactionId, $value)
     {
-        if ($paymentId === null) throw new Exception("Payload not set.", 500);
+        if ($paymentId === null || $transactionId === null || $value === null) throw new Exception("Payload not set.", 500);
         $urlRefund = str_replace("{paymentId}", $paymentId, $urlRefund);
         $json = [
             "paymentId" => $paymentId,
             "transactionId" => $transactionId,
-            "value" => $value,
+            "value" => DataUtils::formatMoney($value),
             "requestId" => $paymentId . date("YmdHisu"),
         ];
         $response = DataUtils::request($urlRefund, $appKey, $appToken, $json);
-        DataUtils::validateData($response, "SuperappCancelPaymentResponse.json");
+        DataUtils::validateData($response, "SuperappRefundPaymentResponse.json");
         return $response;
     }
 }

@@ -8,14 +8,14 @@ use UDT\Utils\DataUtils;
 class Cancel
 {
     /**
-     * Communicate with server to request a new payment.
+     * COMMUNICATE WITH SERVER TO REQUEST CANCEL AN ORDER AND VALIDATES DATA
      *
      * @return object
-     * @throws Exception if the payment is unable to request.
+     * @throws Exception
      */
     public static function request($urlCancel, $appKey, $appToken, $paymentId)
     {
-        if ($paymentId === null) throw new Exception("Payload not set.", 500);
+        if ($paymentId === null) throw new Exception("Payment ID not set.", 500);
         $urlCancel = str_replace("{paymentId}", $paymentId, $urlCancel);
         $json = [
             "paymentId" => $paymentId,

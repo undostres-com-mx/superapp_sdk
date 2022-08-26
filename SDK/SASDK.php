@@ -12,10 +12,10 @@ class SASDK extends DataUtils
 {
     public static $version = "1.0.0";
     public static $isSet = false;
-    private static $apiToken;
     private static $apiKey;
-    private static $appToken;
+    private static $apiToken;
     private static $appKey;
+    private static $appToken;
     private static $appHash;
     private static $sdkHash = "72253f579e7dc003da754dad4bd403a6";
     private static $urlPayment = "/api/v1/superapp/payments";
@@ -35,10 +35,10 @@ class SASDK extends DataUtils
         self::$urlRefund = $host . self::$urlRefund;
         if ($config !== null) {
             self::$isSet = true;
-            self::$apiToken = $config->apiToken;
             self::$apiKey = $config->apiKey;
-            self::$appToken = $config->appToken;
+            self::$apiToken = $config->apiToken;
             self::$appKey = $config->appKey;
+            self::$appToken = $config->appToken;
             self::$appHash = $config->appHash;
         }
     }
@@ -84,15 +84,16 @@ class SASDK extends DataUtils
     /**
      * VERIFICATION OF REQUEST HEADERS
      *
+     * @param $apiKey
+     * @param $apiToken
      * @return bool
+     * @throws Exception
      */
-    public static function validateRequestHeaders($apiKey, $apiToken): ?bool
+    public static function validateRequestHeaders($apiKey, $apiToken): bool
     {
-        if (self::$isSet) return self::$apiKey === $apiKey && self::$apiToken === $apiToken;
-        return null;
+        if (self::$isSet === false) throw new Exception("Not initialized.", 500);
+        return self::$apiKey === $apiKey && self::$apiToken === $apiToken;
     }
-
-
 
     /**
      * GENERATE ORDER AND GET PAYMENT URL
@@ -116,7 +117,7 @@ class SASDK extends DataUtils
     }
 
     /**
-     * CANCEL UDT ORDER
+     * CANCEL PENDING UDT ORDER
      *
      * @param $paymentId
      * @return array
@@ -144,7 +145,7 @@ class SASDK extends DataUtils
     {
         try {
             if (self::$isSet === false) throw new Exception("Not initialized.", 500);
-            Refund::request(self::$urlRefund, self::$appKey, self::$appToken, $paymentId, $transactionId, self::formatMoney($value));
+            Refund::request(self::$urlRefund, self::$appKey, self::$appToken, $paymentId, $transactionId, $value);
             return ["code" => 200, "status" => "Success"];
         } catch (Exception $e) {
             return ["code" => $e->getCode(), "status" => $e->getMessage()];
