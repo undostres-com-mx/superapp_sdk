@@ -48,7 +48,7 @@ composer update
 
 The use of composer requires the usage of `require_once('/vendor/autoload.php');`
 
-Import the SDK use `use UDT\SDK\SASDK;`;
+Import the SDK using `use UDT\SDK\SASDK;`;
 
 Initialize the static class `SASDK::init(hashKey, server);`
 
@@ -63,7 +63,7 @@ There you can do:
 - validateRequestHeaders
   - Check api/token to see if request is authentic.
 - formatMoney
-  - Gives the standard format to money.
+  - Gives the standard UDT format to money, decimal separated by dot, no comma.
 - createPayment
   - Create an order and retrieve payment url.
 - cancelOrder
