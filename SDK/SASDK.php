@@ -44,27 +44,27 @@ class SASDK extends DataUtils
     }
 
     /**
-     * DECRYPT USING 3DES WITH MD5
+     * DECRYPT USING AES WITH MD5
      *
      * @return object
      */
     public static function decryptSDK(string $data, bool $decode = true)
     {
-        $data = openssl_decrypt(base64_decode($data), "DES-EDE3", self::$sdkHash, OPENSSL_RAW_DATA);
+        $data = openssl_decrypt(base64_decode($data), "AES-128-CBC", self::$sdkHash, OPENSSL_RAW_DATA);
         if ($data === false) return null;
         if ($decode === true) $data = json_decode($data);
         return $data;
     }
 
     /**
-     * ENCRYPT USING 3DES WITH MD5
+     * ENCRYPT USING AES WITH MD5
      *
      * @param $data
      * @return string
      */
     public static function encryptSDK($data): string
     {
-        return base64_encode(openssl_encrypt($data, "DES-EDE3", self::$sdkHash, OPENSSL_RAW_DATA));
+        return base64_encode(openssl_encrypt($data, "AES-128-CBC", self::$sdkHash, OPENSSL_RAW_DATA));
     }
 
     /**
@@ -75,7 +75,7 @@ class SASDK extends DataUtils
     public static function decryptUDT($data, $key, $decode = true)
     {
         if ($key === null && self::$isSet) $key = self::$appHash;
-        $data = openssl_decrypt(base64_decode($data), "aes-128-cbc", hex2bin(substr($key, 0, 32)), 1, hex2bin(substr($key, 32)));
+        $data = openssl_decrypt(base64_decode($data), "AES-128-CBC", hex2bin(substr($key, 0, 32)), 1, hex2bin(substr($key, 32)));
         if ($data === false) return null;
         if ($decode === true) $data = json_decode($data);
         return $data;
