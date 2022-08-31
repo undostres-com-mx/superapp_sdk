@@ -106,11 +106,7 @@ class SASDK extends DataUtils
         try {
             if (self::$isSet === false) throw new Exception("Not initialized.", 500);
             $response = Payment::request(self::$urlPayment, self::$appKey, self::$appToken, $json);
-            $queryParams = [];
-            parse_str(parse_url($response->paymentUrl)["query"], $queryParams);
-            $url = $queryParams["url"];
-            $url = "undostres://home?stage=" . $queryParams["stage"] . "&url=" . urlencode($url);
-            return ["code" => 200, "status" => "Success", "response" => $url];
+            return ["code" => 200, "status" => "Success", "response" => $response->paymentUrl];
         } catch (Exception $e) {
             return ["code" => $e->getCode(), "status" => $e->getMessage()];
         }
