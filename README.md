@@ -74,8 +74,32 @@ There you can do:
 Do the following on project root folder to use the key utilities:
 
 ```
-php .\src\KeyUtils.php
+php .\Utils\KeyUtils.php
 ``` 
+
+---
+
+## Testing
+
+To make test calls it's needed to have a ssl certificate, to do so download the certificate and update your **php.ini** with yout path like this:
+
+```
+[curl]
+curl.cainfo="C:/php/ssl/cacert.pem"
+openssl.cafile="C:/php/ssl/cacert.pem"
+``` 
+
+The certificate can be downloaded [here.](http://curl.haxx.se/ca/cacert.pem)
+
+Do the following on project root folder to open the testing utilities:
+
+```
+php .\Utils\Test.php
+``` 
+
+Then you can make successful calls.
+
+Keep in mind that to make a payment you need a **return** and **callback** api. If you don't add it to the request the payment is always going to fail.
 
 ---
 
