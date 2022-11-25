@@ -20,7 +20,7 @@ php -r "unlink('composer-setup.php');"
 
 ## Installation
 
-If composer.json is present, and has the package in the requirement list do:
+If composer.json is present and has the package in the requirement list do:
 
 ```
 composer install
@@ -52,26 +52,41 @@ Import the SDK using `use UDT\SDK\SASDK;`
 
 Initialize the static class `SASDK::init(hashKey, server);`
 
-There you can do:
+On SASDK instance you can do:
 
-- encryptSDK
+- encryptSDK($data) : (Input: Array of data, Output: String)
   - Encrypt string with 3des algorithm.
-- decryptSDK
+
+- decryptSDK($data, $decode) : (Input: String, Output: String or object)
   - Decrypt string with 3des algorithm.
-- decryptUDT
+
+- decryptUDT($data) : (Input: String, Output: String)
   - Decrypt string with UDT algorithm.
-- validateRequestHeaders
+
+- validateRequestHeaders($apiKey, $apiToken) : (Input: Data on received api headers, Output: Bool)
   - Check api/token to see if request is authentic.
-- formatMoney
+
+- formatMoney($money) : (Input: String or numeric, Output: Float with udt standards)
   - Gives the standard UDT format to money, decimal separated by dot, no comma.
-- createPayment
+
+- createPayment($json) : (Input: Payment JSON (See Test.php), Output: Object)
   - Create an order and retrieve payment url.
-- cancelOrder
+
+- cancelOrder($paymentId) : (Input: Payment id to cancel, Output: Object)
   - Cancel a pending order on UDT.
-- refundOrder
+
+- refundOrder($paymentId, $transactionId, $value) : (Input: Payment id, transaction id and value to refund, Output: Object)
   - Refund a paid order on UDT.
 
+---
+
+## Key utils
+
 Do the following on project root folder to use the key utilities:
+
+- Create hash key.
+- Read hash key (Given by UDT).
+- Read udt hash (User data encoded on url).
 
 ```
 php .\Utils\KeyUtils.php
@@ -79,7 +94,7 @@ php .\Utils\KeyUtils.php
 
 ---
 
-## Testing
+## Local testing
 
 To make test calls it's needed to have a ssl certificate, to do so download the certificate and update your **php.ini** with yout path like this:
 
