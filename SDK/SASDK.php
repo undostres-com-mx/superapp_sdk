@@ -43,6 +43,23 @@ class SASDK extends DataUtils
         }
     }
 
+    public static function initSuperAppMerchant($superAppMerchant, string $customServer = null)
+    {
+        $host = $customServer !== null ? $customServer : self::$server;
+        self::$urlPayment = $host . self::$urlPayment;
+        self::$urlCancel = $host . self::$urlCancel;
+        self::$urlRefund = $host . self::$urlRefund;
+        if ($superAppMerchant !== null) {
+            self::$isSet = true;
+            self::$apiKey = $superAppMerchant->superAppUnDosTresKey;
+            self::$apiToken = $superAppMerchant->superAppUnDosTresToken;
+            self::$appKey = $superAppMerchant->appKey;
+            self::$appToken = $superAppMerchant->appToken;
+            self::$appHash = $superAppMerchant->encryptKey;
+        }
+    }
+
+
     /**
      * DECRYPT USING AES WITH MD5
      *

@@ -1,6 +1,5 @@
 {
     "name": "undostres-com-mx/superapp_sdk",
-    "version": "2.0",
     "description": "SDK for undostres superapp.",
     "license": "proprietary",
     "autoload": {
@@ -24,6 +23,6 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-openssl": "*",
-        "opis/json-schema": "1.*"
+        "opis/json-schema": "2.3.0"
     }
 }
